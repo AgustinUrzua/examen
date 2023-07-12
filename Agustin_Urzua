@@ -1,0 +1,106 @@
+
+PisoDep=[None]*10
+precios=[3800, 3000, 2800, 3500]
+ventas=[0, 0, 0, 0]
+ganancias=0
+
+def ComprarDepartamento():
+  global ganancias
+
+  TipoDep=0
+
+  TipoDep=int(input("Ingrese el tipo de departamento 1.(A) 2.(B) 3.(C) 4.(D): "))
+  if TipoDep<1 or TipoDep>4:
+    print("Tipo de departamento invalido")
+    return
+
+  run=int(input("Para continuar ingrese su RUT (sin puntos ni guion verificador): "))
+
+
+  PisoDep_disponibles = MostrarDepartamentosDisponibles()
+  PisoDep_seleccionados=[]
+
+  while True:
+      PisoDep=int(input("Ingrese el piso del departamento: "))
+      if PisoDep<1 or PisoDep>10:
+        print("Piso invalido")
+      elif PisoDep[PisoDep - 1] is not None:
+        print("El piso seleccionado no esta disponible")
+      else:
+        PisoDep[PisoDep - 1] = TipoDep
+        PisoDep_seleccionados.append(PisoDep)
+        break
+
+  ganancias+=precios[TipoDep - 1]*PisoDep
+  ventas[TipoDep - 1]+=PisoDep
+
+  print("La operacion se ha realizado correctamente")
+
+def MostrarDepartamentosDisponibles():
+  print("=====DEPARTAMENTOS=====")
+  for i in range(4):
+    for j in range(10):
+      PisoDep = i * 10 + j + 1
+      estado="X" if PisoDep[PisoDep - 1] is not None else str(PisoDep)
+      print(estado, end="\t")
+    print()
+  print()
+
+def VerListadoCompradores():
+  print("=====LISTADO COMPRADORES=====")
+  compradores=[]
+  for i, PisoDep in enumerate(PisoDep):
+    if PisoDep is not None:
+      run=int(input(f"Ingrese el RUT del comprador {i+1}: "))
+      PisoDep.append((run, i+1))
+
+  compradores.sort(key=lambda x: x[0])
+
+  print("RUN\t\tAsiento")
+  for comprador in compradores:
+      print(f"{comprador[0]}\t{comprador[1]}")
+
+def MostrarVentasTotales():
+  print("=====VENTAS TOTALES=====")
+  print("Ventas totales=", ganancias)
+  print("Cantidad de ventas vendidas:")
+  print("Tipo A:",ventas[0])
+  print("Tipo B:",ventas[1])
+  print("Tipo C:",ventas[2])
+  print("Tipo D:",ventas[3])
+
+def SalirDelPrograma():
+  print("Nombre y apellido del programador: Agustin Urzua")
+
+
+
+def MostrarMenu():
+  print("===== CASA FELIZ =====")
+  print("1. Comprar departamento")
+  print("2. Mostrar departamentos disponibles")
+  print("3. Ver listado de compradores")
+  print("4. Mostrar ganancias totales")
+  print("5. Salir del programa")
+
+MostrarMenu()
+
+while True:
+  op=input("Escoga una opcion: ")
+  if op=="1":
+    ComprarDepartamento()
+  elif op=="2":
+    MostrarDepartamentosDisponibles()
+  elif op=="3":
+    VerListadoCompradores()
+  elif op=="4":
+    MostrarVentasTotales()
+  elif op=="5":
+    SalirDelPrograma()
+    break
+  else:
+    print("Opcion invalida, elija otra opcion")
+
+
+
+
+
